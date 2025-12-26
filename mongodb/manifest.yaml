@@ -27,4 +27,15 @@ spec:
       containers:
       - name: mongodb
         image: pullfrom dockerhub
+        rednessProbe:
+          tcpsocket:
+            port: 27017
+            initialdelayseconds: 10
+            persionseconds: 10
+
+        livenessProbe:
+          tcpsocket:
+            port: 27017
+            initialdelayseconds: 5
+            persionseconds: 5      
         
