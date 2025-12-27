@@ -1,3 +1,12 @@
+apiversion: v1
+kind: configmap
+metadata:
+  name: catalogue
+  namespace: roboshop
+data:
+ MONGO: "true"
+ MONGO_URL: "mongodb://mongodb:27017/catalogue"
+---
 apiversion: app/v1
 kind: Deployment
 metadata:
@@ -17,6 +26,9 @@ spec:
    component: catalogue
    tier: backend
    imagepullpolicy: always
+   envfrom:
+    - configmapref:
+        name: catalogue
    #pod defention
   templects:
     metadata:
