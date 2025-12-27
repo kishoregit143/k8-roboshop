@@ -9,3 +9,4 @@ labels:
 spec:
  - name: debug
    image: kishore123/debug:v1
+   imagepullpolicy: always
