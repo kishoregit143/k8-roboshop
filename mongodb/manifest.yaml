@@ -50,6 +50,7 @@ spec:
    project: toboshop
    component: mongodb
    tier: db
+   imagepullpolicy: always
 ports:
     - protocol: tcp
       port: 27017 #services port
