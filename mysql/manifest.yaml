@@ -1,3 +1,14 @@
+apiversion: v1
+kind: configmap
+metadata:
+  name: mysql
+  namespace: roboshop
+data:
+ my.conf:
+  [mysqld]
+  innodb_redo_log_capacity= 2G  
+
+---
 apiversion: app/v1
 kind: Deployment
 metadata:
@@ -29,15 +40,19 @@ spec:
         image: pullfrom dockerhub
         rednessProbe:
           tcpsocket:
-            port: 27017
+            port: 3306
             initialdelayseconds: 10
             persionseconds: 10
 
         livenessProbe:
           tcpsocket:
-            port: 27017
-            initialdelayseconds: 5
-            persionseconds: 5    
+            port: 3306
+            initialdelayseconds: 20
+            persionseconds: 20
+        volumeMounts:
+         - name: mysql-config
+           mountpath: /etc/mysql/conf.d/my.conf
+           subpath: my.conf    
 
 ---
 apiversion: v1
