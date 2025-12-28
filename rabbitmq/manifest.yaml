@@ -1,23 +1,12 @@
-apiversion: v1
-kind: configmap
-metadata:
-  name: mysql
-  namespace: roboshop
-data:
- my.conf:
-  [mysqld]
-  innodb_redo_log_capacity= 2G  
-
----
 apiversion: app/v1
 kind: Deployment
 metadata:
- name: mysql
+ name: rabbitmq
  namespace: roboshop
  #this labels are replecaset labels
  labels:
    project: toboshop
-   component: mysql
+   component: rabbitmq
    tier: db
 spec:
  replicas: 1
@@ -25,55 +14,46 @@ spec:
  # this lablels used to  select the pods
   matchlabels:
    project: toboshop
-   component: mysql
+   component: rabbitmq
    tier: db
    #pod defention
   templects:
     metadata:
       labels:
       project: toboshop
-      component: mysql
+      component: rabbitmq
       tier: db
     spec:
       containers:
-      - name: mysql
+      - name: rabbitmq3
         image: pullfrom dockerhub
         rednessProbe:
           tcpsocket:
-            port: 3306
+            port: 27017
             initialdelayseconds: 10
             persionseconds: 10
 
         livenessProbe:
           tcpsocket:
-            port: 3306
-            initialdelayseconds: 20
-            persionseconds: 20
-        volumeMounts:
-         - name: mysql-config
-           mountpath: /etc/mysql/conf.d/my.conf
-           subpath: my.conf    
-
-        volumes:      
-        - name: mysql-config
-          configmap:
-         name: mysql
+            port: 5672
+            initialdelayseconds: 5
+            persionseconds: 5    
 
 ---
 apiversion: v1
 kind: services
 metadata:
-   name: mysql
-   namespace: mysql
+   name: rabbitmq
+   namespace: rabbitmq
 spec:
  selector:
    project: toboshop
-   component: mysql
+   component: rabbitmq
    tier: db
    imagepullpolicy: always
 ports:
     - protocol: tcp
-      port: 3306 #services port
-      targetport: 3306  #containers port
+      port: 27017 #services port
+      targetport: 27017  #containers port
 
         
