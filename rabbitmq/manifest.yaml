@@ -27,6 +27,11 @@ spec:
       containers:
       - name: rabbitmq3
         image: pullfrom dockerhub
+        env:
+         - name: RABBITMQ_DEFAULT_USER
+           value: roboshop
+         - name: RABBITMQ_DEFAULT_PASSWORD
+           value: roboshop123 
         rednessProbe:
           tcpsocket:
             port: 27017
