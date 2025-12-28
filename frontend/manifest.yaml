@@ -1,0 +1,71 @@
+apiversion: v1
+kind: configmap
+metadata:
+  name: frontend
+  namespace: roboshop
+data:
+ MONGO: "true"
+ REDIS_URL: "redis://redis:6379"
+---
+apiversion: app/v1
+kind: Deployment
+metadata:
+ name: frontend
+ namespace: roboshop
+ #this labels are replecaset labels
+ labels:
+   project: roboshop
+   component: frontend
+   tier: backend
+spec:
+ replicas: 1
+ selector:
+ # this lablels used to  select the pods
+  matchlabels:
+   project: roboshop
+   component: frontend
+   tier: backend
+   imagepullpolicy: always
+  
+   #pod defention
+  templects:
+    metadata:
+      labels:
+      project: roboshop
+      component: frontend
+      tier: backend
+    spec:
+      containers:
+      - name: frontend
+        image: pullfrom dockerhub
+      ports:
+      - name: liveness-port
+        containerport: 80 
+
+        rednessProbe:
+          httpget:
+            path: /
+            port: liveness-port
+
+        livenessProbe:
+          httpget:
+            path: /
+            port: liveness-port   
+
+---
+apiversion: v1
+kind: services
+metadata:
+   name: frontend
+   namespace: frontend
+spec:
+ selector:
+   project: roboshop
+   component: frontend
+   tier: backend
+ports:
+    - protocol: tcp
+      port: 80 #services port
+      targetport: 80  #containers port
+
+        
