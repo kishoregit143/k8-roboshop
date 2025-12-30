@@ -111,7 +111,7 @@ spec:
         image: pullfrom dockerhub
       ports:
       - name: liveness-port
-        containerport: 80 
+        containerport: 8080
 
         rednessProbe:
           httpget:
