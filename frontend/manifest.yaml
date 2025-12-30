@@ -117,11 +117,25 @@ spec:
           httpget:
             path: /
             port: liveness-port
-
+            failurethreshold: 1
+            persionseconds: 15
         livenessProbe:
           httpget:
             path: /
-            port: liveness-port   
+            port: liveness-port  
+            failurethreshold: 1
+            persionseconds: 20
+      
+        volumeMounts:
+         - name: nginx-config
+           mountpath: /etc/nginx/nginx.conf
+           subpath: nginx.conf    
+
+        volumes:      
+        - name: nginx-config
+          configmap:
+          name: frontend
+          
 
 ---
 apiversion: v1

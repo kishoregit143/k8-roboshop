@@ -57,7 +57,7 @@ spec:
         volumes:      
         - name: mysql-config
           configmap:
-         name: mysql
+          name: mysql
 
 ---
 apiversion: v1
